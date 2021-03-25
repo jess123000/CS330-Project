@@ -8,10 +8,11 @@
 
 import sys
 from graphics import *
+from Plane import *
 
 class CustomerView:
 
-    def __init__(self, win: GraphWin):
+    def __init__(self, win: GraphWin, plane: Plane):
         # create all the buttons and text
         self.quitButton = Rectangle(Point(450, 500), Point(550, 550))
         self.quitText = Text(Point(500, 525), "Quit")

@@ -9,14 +9,16 @@
 from ManagerView import *
 from CustomerView import *
 from OpeningView import *
+from Plane import *
 
 def main():
     # create initial window
     win = GraphWin("FlightsGUI", 1000, 600)
 
+    plane = Plane()
     openingVIew = OpeningView(win)
-    customerView = CustomerView(win)
-    managerView = ManagerView(win)
+    customerView = CustomerView(win, plane)
+    managerView = ManagerView(win, plane)
 
     clicked = True
     while clicked:
