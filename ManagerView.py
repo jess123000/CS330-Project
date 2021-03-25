@@ -9,6 +9,7 @@
 import sys
 from graphics import *
 from Plane import *
+import random
 
 
 class ManagerView:
@@ -51,9 +52,19 @@ class ManagerView:
 
     def calculateSatisfactionIndex(self):
         # calculate satisfaction index here
-
+        if self.plane.numGroups < 10:
+            drawn = Text(Point(500, 100), "Not enough groups for satisfaction results")
+        else:
+            tenRandom = random.choices(self.plane.customerSatisfactionIndex, k=10)
+            index = 0
+            for i in range(len(tenRandom)):
+                index += self.plane.customerSatisfactionIndex[i]
+            index /= 10
+            drawn = Text(Point(500, 100), f"Customer Satisfaction Index: {index}")
         # wait for button to be pressed
-        self.clicked(self.win.getMouse())
+        point = self.win.getMouse()
+        drawn.undraw()
+        self.clicked(point)
         return
 
     def clicked(self, pt: Point):

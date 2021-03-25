@@ -11,7 +11,7 @@ class Plane:
     def __init__(self):
         self.availableSeats = []
         self.takenSeats = []
-        self.customerSatisfactionIndex = []
+        self.customerSatisfactionIndex = [int]
         self.numGroups = 0
 
     def addSatisfactionIndex(self):
