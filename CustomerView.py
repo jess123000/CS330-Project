@@ -34,7 +34,9 @@ class CustomerView:
         self.threeText = Text(Point(700, 225), "Three")
         self.redoButton = Rectangle(Point(250, 390), Point(350, 440))
         self.redoText = Text(Point(300, 415), "Redo")
+        self.flightFullText = Text(Point(500, 100), "Flight full")
         self.win = win
+        self.plane = plane
 
     def drawAllNeed(self):
         # draw things all views need
@@ -153,21 +155,21 @@ class CustomerView:
                 self.undrawFamilyView()
                 self.drawSeatSelection()
                 # family size is three
-                self.familySelectSeat(3)
+                self.selectSeat("family", currentSeat=None, size=3)
                 return
             # if two button was clicked
             elif (450 < pt.x < 550) and (200 < pt.y < 250):
                 self.undrawFamilyView()
                 self.drawSeatSelection()
                 # family size is 4
-                self.familySelectSeat(4)
+                self.selectSeat("family", currentSeat=None, size=4)
                 return
             # if three button was clicked
             elif (650 < pt.x < 750) and (200 < pt.y < 250):
                 self.undrawFamilyView()
                 self.drawSeatSelection()
                 # family size is 5
-                self.familySelectSeat(5)
+                self.selectSeat("family", currentSeat=None, size=5)
                 return
             else:
                 # no button was clicked, wait again
@@ -184,7 +186,7 @@ class CustomerView:
         self.redoText.undraw()
         return
 
-    def clickedSeatSelection(self, pt: Point, seatType: str, currentSeat = None, size = None):
+    def clickedSeatSelection(self, pt: Point, seatType: str, currentSeat:list = None, size:int = None):
         # check what button was clicked
         clicked = True
         while clicked:
@@ -198,35 +200,25 @@ class CustomerView:
                 return
             # if redo button was selected redo the type of seat selection
             elif (250 < pt.x < 350) and (390 < pt.y < 440):
-                if seatType == "business":
-                    self.businessSelectSeat(currentSeat)
-                    return
-                elif seatType == "tourist":
-                    self.touristSelectSeat(currentSeat)
-                    return
-                elif seatType == "family":
-                    self.familySelectSeat(size, currentSeat)
-                    return
+                self.selectSeat(seatType, currentSeat, size)
         return
 
 
-    def businessSelectSeat(self, currentSeat = None):
+    def selectSeat(self, seatType:str, currentSeat:list = None, size:int = None):
+        # if there is a current seat
         if currentSeat:
-            self.clickedSeatSelection(self.win.getMouse(), "business")
+            self.plane.assignSeat(seatType, currentSeat, size)
+            self.clickedSeatSelection(self.win.getMouse(), seatType, currentSeat, size)
         else:
-            self.clickedSeatSelection(self.win.getMouse(), "business")
-        return
-
-    def touristSelectSeat(self, currentSeat = None):
-        if currentSeat:
-            self.clickedSeatSelection(self.win.getMouse(), "tourist")
-        else:
-            self.clickedSeatSelection(self.win.getMouse(), "tourist")
-        return
-
-    def familySelectSeat(self, size: int, currentSeat = None):
-        if currentSeat:
-            self.clickedSeatSelection(self.win.getMouse(), "family", size)
-        else:
-            self.clickedSeatSelection(self.win.getMouse(), "family", size)
+            # assign a seat or find the flight is full
+            flightFull = self.plane.assignSeat(seatType, size=size)
+            # if the flight is full
+            if flightFull:
+                # display flight is full and wait
+                self.flightFullText.draw(self.win)
+                point = self.win.getMouse()
+                self.flightFullText.undraw()
+                self.clickedSeatSelection(point, seatType)
+            else:
+                self.clickedSeatSelection(self.win.getMouse(), seatType, size=size)
         return

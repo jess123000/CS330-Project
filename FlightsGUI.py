@@ -15,12 +15,14 @@ def main():
     # create initial window
     win = GraphWin("FlightsGUI", 1000, 600)
 
+    # create the different objects for the GUI
     plane = Plane()
     openingVIew = OpeningView(win)
     customerView = CustomerView(win, plane)
     managerView = ManagerView(win, plane)
 
     clicked = True
+    # not an infinite loop because of sys.exit calls within classes
     while clicked:
         selection = openingVIew.drawOpeningView()
         if selection == "customer":
