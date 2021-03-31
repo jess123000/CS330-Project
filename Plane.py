@@ -13,18 +13,15 @@ class Plane:
     def __init__(self, win: GraphWin):
         self.availableSeats = []
         for i in range(120):
-            self.availableSeats.append(f"seat {i}")
+            self.availableSeats.append(i)
         self.takenSeats = []
         self.availableSeatsNum = 120
-        self.customerSatisfactionIndex = [int]
+        self.customerSatisfactionIndex = []
         self.numGroups = 0
         self.win = win
         self.flightFullText = Text(Point(500, 100), "Flight full")
 
-    def addSatisfactionIndex(self):
-        pass
-
-    def assignSeat(self, seatType: str, currentSeat:list = None, size:int = None) -> (Point, str):
+    def assignSeat(self, seatType: str, currentSeat:list = None, size:int = None) -> (Point, int):
         if seatType == "business":
             # if a seat had already been assigned
             if currentSeat:
@@ -41,6 +38,15 @@ class Plane:
             else:
                 self.numGroups += 1
                 self.availableSeatsNum -= 1
+                seat = self.availableSeats[0]
+                if seat < 12:
+                    self.customerSatisfactionIndex.append(5)
+                else:
+                    self.customerSatisfactionIndex.append(-5)
+                    seat = [seat]
+                point = self.win.getMouse()
+                self.flightFullText.undraw()
+                return point, seat
         elif seatType == "tourist":
             # if a seat had already been assigned
             if currentSeat:
