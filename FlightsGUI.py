@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/envp ython3
 
 # --------------------------------------------------
 # FLightsGUI.py
@@ -16,7 +16,7 @@ def main():
     win = GraphWin("FlightsGUI", 1000, 600)
 
     # create the different objects for the GUI
-    plane = Plane()
+    plane = Plane(win)
     openingVIew = OpeningView(win)
     customerView = CustomerView(win, plane)
     managerView = ManagerView(win, plane)

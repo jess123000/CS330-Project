@@ -62,9 +62,9 @@ class ManagerView:
             index /= 10
             drawn = Text(Point(500, 100), f"Customer Satisfaction Index: {index}")
         # wait for button to be pressed
-        point = self.win.getMouse()
+        pt = self.win.getMouse()
         drawn.undraw()
-        self.clicked(point)
+        self.clicked(pt)
         return
 
     def clicked(self, pt: Point):

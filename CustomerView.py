@@ -34,7 +34,6 @@ class CustomerView:
         self.threeText = Text(Point(700, 225), "Three")
         self.redoButton = Rectangle(Point(250, 390), Point(350, 440))
         self.redoText = Text(Point(300, 415), "Redo")
-        self.flightFullText = Text(Point(500, 100), "Flight full")
         self.win = win
         self.plane = plane
 
@@ -96,13 +95,13 @@ class CustomerView:
             elif (250 < pt.x < 350) and (200 < pt.y < 250):
                 self.undrawStartCustomerView()
                 self.drawSeatSelection()
-                self.businessSelectSeat()
+                self.selectSeat("business")
                 return
             # if the tourist button is clicked
             elif (450 < pt.x < 550) and (200 < pt.y < 250):
                 self.undrawStartCustomerView()
                 self.drawSeatSelection()
-                self.touristSelectSeat()
+                self.selectSeat("tourist")
                 return
             # if the family button is clicked
             elif (650 < pt.x < 750) and (200 < pt.y < 250):
@@ -155,21 +154,21 @@ class CustomerView:
                 self.undrawFamilyView()
                 self.drawSeatSelection()
                 # family size is three
-                self.selectSeat("family", currentSeat=None, size=3)
+                self.selectSeat("family", size=3)
                 return
             # if two button was clicked
             elif (450 < pt.x < 550) and (200 < pt.y < 250):
                 self.undrawFamilyView()
                 self.drawSeatSelection()
                 # family size is 4
-                self.selectSeat("family", currentSeat=None, size=4)
+                self.selectSeat("family", size=4)
                 return
             # if three button was clicked
             elif (650 < pt.x < 750) and (200 < pt.y < 250):
                 self.undrawFamilyView()
                 self.drawSeatSelection()
                 # family size is 5
-                self.selectSeat("family", currentSeat=None, size=5)
+                self.selectSeat("family", size=5)
                 return
             else:
                 # no button was clicked, wait again
@@ -205,20 +204,7 @@ class CustomerView:
 
 
     def selectSeat(self, seatType:str, currentSeat:list = None, size:int = None):
-        # if there is a current seat
-        if currentSeat:
-            self.plane.assignSeat(seatType, currentSeat, size)
-            self.clickedSeatSelection(self.win.getMouse(), seatType, currentSeat, size)
-        else:
-            # assign a seat or find the flight is full
-            flightFull = self.plane.assignSeat(seatType, size=size)
-            # if the flight is full
-            if flightFull:
-                # display flight is full and wait
-                self.flightFullText.draw(self.win)
-                point = self.win.getMouse()
-                self.flightFullText.undraw()
-                self.clickedSeatSelection(point, seatType)
-            else:
-                self.clickedSeatSelection(self.win.getMouse(), seatType, size=size)
+        # get seat and next click
+        pt, seat = self.plane.assignSeat(seatType, currentSeat, size)
+        self.clickedSeatSelection(pt, seatType, seat, size)
         return
