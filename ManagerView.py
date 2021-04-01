@@ -61,8 +61,10 @@ class ManagerView:
                 index += self.plane.customerSatisfactionIndex[i]
             index /= 10
             drawn = Text(Point(500, 100), f"Customer Satisfaction Index: {index}")
-        # wait for button to be pressed
+        flightSize = Text(Point(500, 120), f"Number of groups: {self.plane.numGroups}")
+        # wait for button to be pressed and undraw
         pt = self.win.getMouse()
+        flightSize.undraw()
         drawn.undraw()
         self.clicked(pt)
         return

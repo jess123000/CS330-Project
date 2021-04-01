@@ -95,13 +95,13 @@ class CustomerView:
             elif (250 < pt.x < 350) and (200 < pt.y < 250):
                 self.undrawStartCustomerView()
                 self.drawSeatSelection()
-                self.selectSeat("business")
+                self.selectSeat("business", size = 1)
                 return
             # if the tourist button is clicked
             elif (450 < pt.x < 550) and (200 < pt.y < 250):
                 self.undrawStartCustomerView()
                 self.drawSeatSelection()
-                self.selectSeat("tourist")
+                self.selectSeat("tourist", size = 2)
                 return
             # if the family button is clicked
             elif (650 < pt.x < 750) and (200 < pt.y < 250):
@@ -201,7 +201,6 @@ class CustomerView:
             elif (250 < pt.x < 350) and (390 < pt.y < 440):
                 self.selectSeat(seatType, currentSeat, size)
         return
-
 
     def selectSeat(self, seatType:str, currentSeat:list = None, size:int = None):
         # get seat and next click
