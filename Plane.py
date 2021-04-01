@@ -14,73 +14,100 @@ class Plane:
         self.availableSeats = []
         for i in range(120):
             self.availableSeats.append(i)
-        self.takenSeats = []
         self.availableSeatsNum = 120
-        self.customerSatisfactionIndex = []
+        self.customerSatisfactionIndex = [int]
         self.numGroups = 0
         self.win = win
         self.flightFullText = Text(Point(500, 100), "Flight full")
         self.noBetterSeatText = Text(Point(500, 100), "No Better Seat Available")
+        # a = left window, b = left middle, c = left aisle, d = right aisle, e = right middle, f = right window
+        self.column = ["a", "b", "c", "d", "e", "f"]
 
-    def flightFull(self, currentSeat:list) -> (Point, int):
+    def flightFull(self) -> Point:
         # display flight is full and wait
         self.flightFullText.draw(self.win)
         pt = self.win.getMouse()
         self.flightFullText.undraw()
-        return pt, currentSeat
+        return pt
 
-    def noBetterSeat(self, currentSeat:list) -> (Point, int):
+    def noBetterSeat(self) -> Point:
         # display no better seat and wait
         self.noBetterSeatText.draw(self.win)
         pt = self.win.getMouse()
         self.noBetterSeatText.undraw()
-        return pt, currentSeat
+        return pt
 
-    def assignSeat(self, seatType: str, currentSeat:list = None, size:int = None) -> (Point, int):
+    def createTicket(self, seats:list) -> (Point, list):
+        pass
+        # tickets = []
+        # for i in len(seats):
+        #     # find the row and column of the seat
+        #     row = seat // 20
+        #     column = seat % 6
+        #     # create the ticket
+        #     tickets.append(Text(Point(500, 100), f"Seat number {seat + 1}. Row {row}, seat {self.column[column - 1]}."))
+        #     pt = self.win.getMouse()
+
+    def assignSeat(self, seatType: str, currentSeat:list = None, size:int = None) -> (Point, list):
         if seatType == "business":
             # if a seat had already been assigned
             if currentSeat:
                 # see if there's seats available
                 if self.availableSeatsNum < size:
-                    return self.noBetterSeat(currentSeat)
+                    return self.noBetterSeat(), currentSeat
                 # see if the seats are worse
                 elif self.availableSeats[0] > 12:
-                    return self.noBetterSeat(currentSeat)
+                    return self.noBetterSeat(), currentSeat
                 # if neither are true, assign the new seat and wait for click
                 else:
-                    seat = self.availableSeats[0]
-                    # TODO draw ticket
-                    pt = self.win.getMouse()
-                    return pt, seat
+                    # assign the next best seat available
+                    seat = [self.availableSeats[0]]
+                    # take the seat out of available seats
+                    self.availableSeats.pop(0)
+                    # readd the seat no longer wanted
+                    self.availableSeats.append(currentSeat[0])
+                    self.availableSeats.sort()
+                    return self.createTicket(seat)
             # else if there's not enough room in the flight
             elif self.availableSeatsNum < size:
-                self.flightFull(currentSeat)
+                return self.flightFull(), currentSeat
             # else assign a new seat
             else:
                 # add how many groups are in the flight
                 self.numGroups += 1
                 # subtract the amount of seats available
                 self.availableSeatsNum -= size
+                # assign the first seat available
                 seat = self.availableSeats[0]
+                # take the seat out of available seats
+                self.availableSeats.pop(0)
+                # if the seat is in business class, satisfaction is 5
                 if seat < 12:
                     self.customerSatisfactionIndex.append(5)
+                # else seat isn't business class, satisfaction is -5
                 else:
                     self.customerSatisfactionIndex.append(-5)
-                # TODO draw ticket
+                # find the row and column of the seat
+                row = seat // 20
+                column = seat % 6
+                # create the ticket
+                ticket = Text(Point(500, 100), f"Seat number {seat + 1}. Row {row}, seat {self.column[column - 1]}.")
+                ticket.draw(self.win)
                 pt = self.win.getMouse()
+                ticket.undraw()
                 return pt, seat
         elif seatType == "tourist":
             # if a seat had already been assigned
             if currentSeat:
                 # check if there is any better seat
                 if len(self.availableSeats) < size:
-                    return self.noBetterSeat(currentSeat)
+                    return self.noBetterSeat(), currentSeat
                 else:
                     # TODO draw ticket
                     pass
             # else if there's not enough room in the flight
             elif self.availableSeatsNum < size:
-                return self.flightFull(currentSeat)
+                return self.flightFull(), currentSeat
             # else assign a new seat
             else:
                 self.numGroups += 1
@@ -91,13 +118,13 @@ class Plane:
             if currentSeat:
                 # check if there is any better seat
                 if len(self.availableSeats) < size:
-                    return self.noBetterSeat(currentSeat)
+                    return self.noBetterSeat(), currentSeat
                 else:
                     # TODO draw ticket
                     pass
             # else if there's not enough room in the flight
             elif self.availableSeatsNum < size:
-                self.flightFull(currentSeat)
+                return self.flightFull(), currentSeat
             # else assign a new seat
             else:
                 self.numGroups += 1
