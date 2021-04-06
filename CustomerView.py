@@ -37,7 +37,7 @@ class CustomerView:
         self.win = win
         self.plane = plane
 
-    def drawAllNeed(self):
+    def drawAllNeed(self) -> None:
         # draw things all views need
         self.quitButton.draw(self.win)
         self.quitText.draw(self.win)
@@ -45,7 +45,7 @@ class CustomerView:
         self.logOffText.draw(self.win)
         return
 
-    def undrawAllNeed(self):
+    def undrawAllNeed(self) -> None:
         # undraw things all view need
         self.quitButton.undraw()
         self.quitText.undraw()
@@ -53,7 +53,7 @@ class CustomerView:
         self.logOffText.undraw()
         return
 
-    def drawStartCustomerView(self):
+    def drawStartCustomerView(self) -> None:
         # draw all the buttons and  text
         self.drawAllNeed()
         self.customerViewText.draw(self.win)
@@ -79,7 +79,7 @@ class CustomerView:
         self.familyText.undraw()
         return
 
-    def clickedStart(self, pt: Point):
+    def clickedStart(self, pt: Point) -> None:
         # check what button was clicked
         clicked = True
         while clicked:
@@ -113,7 +113,7 @@ class CustomerView:
                 pt = self.win.getMouse()
         return
 
-    def drawFamilyView(self):
+    def drawFamilyView(self) -> None:
         # draw the family selection choices
         self.familyViewText.draw(self.win)
         self.oneButton.draw(self.win)
@@ -126,7 +126,7 @@ class CustomerView:
         # wait for click and see what was clicked
         return self.clickedFamily(self.win.getMouse())
 
-    def undrawFamilyView(self):
+    def undrawFamilyView(self) -> None:
         # undraw family view
         self.familyViewText.undraw()
         self.oneButton.undraw()
@@ -137,7 +137,7 @@ class CustomerView:
         self.threeText.undraw()
         return
 
-    def clickedFamily(self, pt: Point):
+    def clickedFamily(self, pt: Point) -> None:
         # check what button was clicked
         clicked = True
         while clicked:
@@ -175,17 +175,17 @@ class CustomerView:
                 pt = self.win.getMouse()
         return
 
-    def drawSeatSelection(self):
+    def drawSeatSelection(self) -> None:
         self.redoButton.draw(self.win)
         self.redoText.draw(self.win)
         return
 
-    def undrawSeatSelection(self):
+    def undrawSeatSelection(self) -> None:
         self.redoButton.undraw()
         self.redoText.undraw()
         return
 
-    def clickedSeatSelection(self, pt: Point, seatType: str, currentSeat:list = None, size:int = None):
+    def clickedSeatSelection(self, pt: Point, seatType: str, currentSeat:list = None, size:int = None) -> None:
         # check what button was clicked
         clicked = True
         while clicked:
@@ -202,7 +202,7 @@ class CustomerView:
                 self.selectSeat(seatType, currentSeat, size)
         return
 
-    def selectSeat(self, seatType:str, currentSeat:list = None, size:int = None):
+    def selectSeat(self, seatType:str, currentSeat:list = None, size:int = None) -> None:
         # get seat and next click
         pt, seat = self.plane.assignSeat(seatType, currentSeat, size)
         self.clickedSeatSelection(pt, seatType, seat, size)

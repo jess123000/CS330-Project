@@ -26,7 +26,7 @@ class ManagerView:
         self.win = win
         self.plane = plane
 
-    def drawManagerView(self):
+    def drawManagerView(self) -> None:
         # draw all buttons and text
         self.quitButton.draw(self.win)
         self.quitText.draw(self.win)
@@ -39,7 +39,7 @@ class ManagerView:
         return
 
 
-    def undrawManagerView(self):
+    def undrawManagerView(self) -> None:
         # undraw all buttons and text
         self.quitButton.undraw()
         self.quitText.undraw()
@@ -50,7 +50,7 @@ class ManagerView:
         self.managerViewText.undraw()
         return
 
-    def calculateSatisfactionIndex(self):
+    def calculateSatisfactionIndex(self) -> None:
         # calculate satisfaction index here
         if self.plane.numGroups < 10:
             drawn = Text(Point(500, 100), "Not enough groups for satisfaction results")
@@ -69,7 +69,7 @@ class ManagerView:
         self.clicked(pt)
         return
 
-    def clicked(self, pt: Point):
+    def clicked(self, pt: Point) -> None:
         # check what button was clicked
         clicked = True
         while clicked:
