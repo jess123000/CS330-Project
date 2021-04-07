@@ -38,7 +38,6 @@ class Plane:
         return pt
 
     def createTicket(self, seats:list) -> Point:
-        pass
         tickets = []
         for i in range(len(seats)):
             # find the row and column of the seat
@@ -56,6 +55,10 @@ class Plane:
         if (self.availableSeats[i] + 1) % 6 == 1:
             # if the adjacent seat is available
             if self.availableSeats[i + 1] == self.availableSeats[i] + 1:
+                # if already have seats, remove them
+                if len(seats) > 0:
+                    seats.pop(0)
+                    seats.pop(0)
                 # add both seats
                 seats.append(self.availableSeats[i])
                 seats.append(self.availableSeats[i + 1])
@@ -69,6 +72,10 @@ class Plane:
         elif (self.availableSeats[i] + 1) % 6 == 5:
             # if the adjacent window seat is available
             if self.availableSeats[i + 1] == self.availableSeats[i] + 1:
+                # if seats already has seats picked, remove them
+                if len(seats) > 0:
+                    seats.pop(0)
+                    seats.pop(0)
                 # add both seats
                 seats.append(self.availableSeats[i])
                 seats.append(self.availableSeats[i + 1])
@@ -80,6 +87,23 @@ class Plane:
                 return self.createTicket(seats), seats
         else:
             return None, seats
+
+    def familyTicketSelection(self, seats: list, i: int, size: int) -> (Point, list):
+        if (self.availableSeats[i] + 1) % 6 == 3:
+            seatsGiven = 1
+            seatsToCheck = [1, 6, 7, -1, 2, 5, 8]
+            j = 0
+            seats.append(self.availableSeats[i])
+            while seatsGiven < size:
+                if j == 7:
+                    return None, []
+                if self.availableSeats[i] + seatsToCheck[j] in self.availableSeats:
+                    seatsGiven += 1
+                    index = self.availableSeats.index(self.availableSeats[i] + 1)
+                    seats.append(self.availableSeats[index])
+                    self.availableSeats.pop(index)
+                    j += 1
+            return self.createTicket(seats), seats
 
     def assignSeat(self, seatType: str, currentSeat:list = None, size:int = None) -> (Point, list):
         if self.availableSeatsNum < size:
@@ -122,18 +146,13 @@ class Plane:
             if currentSeat:
                 # check if there is any better seat
                 seats = []
-                for i in range(len(self.availableSeats)):
-                    # if the seat is a business class seat
-                    if self.availableSeats[i] < 12:
-                        pass
-                    else:
-                        pt, seats = self.touristTicketSelection(seats, i)
-                        # if a seat was found, return
-                        if pt is not None:
-                            for j in range(len(currentSeat)):
-                                self.availableSeats.append(currentSeat[j])
-                            self.availableSeats.sort()
-                            return pt, seats
+                for i in range(-1, -self.availableSeatsNum - 1):
+                    pt, seats = self.touristTicketSelection(seats, i)
+                    if pt is not None:
+                        for j in range(len(currentSeat)):
+                            self.availableSeats.append(currentSeat[j])
+                        self.availableSeats.sort()
+                        return pt, seats
                 if not seats:
                     return self.noBetterSeat(), currentSeat
             # else assign a new seat
@@ -143,43 +162,48 @@ class Plane:
                 # subtract the amount of seats available
                 self.availableSeats -= size
                 seats = []
-                for i in range(len(self.availableSeats)):
-                    # if the seat is business class, don't use it yet
-                    if self.availableSeats[i] < 12:
-                        pass
-                    else:
-                        pt, seats = self.touristTicketSelection(seats, i)
-                        # if a seat was found, return
-                        if pt is not None:
-                            return pt, seats
-                # if no seat was found through previous loop
-                if not seats:
-                    i = 0
-                    # allow for business seats to be given
-                    while self.availableSeats[i] < 12:
-                        pt, seats = self.touristTicketSelection(seats, i)
-                        # if a seat was found, return
-                        if pt is not None:
-                            return pt, seats
-                        i += 1
-                    # if the function hasn't return yet, there are no window seats with adjacent seat available
-                    # assign two random seats from the back to avoid business class if possible
-                    seats.append(self.availableSeats[-1])
-                    seats.append(self.availableSeats[-2])
-                    # remove those seats from availability
-                    self.availableSeats.pop(-1)
-                    self.availableSeats.pop(-1)
-                    return self.createTicket(seats), seats
-
+                for i in range(-1, -self.availableSeatsNum - 1):
+                    pt, seats = self.touristTicketSelection(seats, i)
+                    if pt is not None:
+                        self.customerSatisfactionIndex.append(15)
+                        return pt, seats
+                # if the function hasn't return yet, there are no window seats with adjacent seat available
+                # assign two random seats from the back to avoid business class if possible
+                seats.append(self.availableSeats[-1])
+                seats.append(self.availableSeats[-2])
+                if self.availableSeats[-1] - 1 == self.availableSeats[-2]:
+                    self.customerSatisfactionIndex.append(10)
+                else:
+                    self.customerSatisfactionIndex.append(-10)
+                # remove those seats from availability
+                self.availableSeats.pop(-1)
+                self.availableSeats.pop(-1)
+                return self.createTicket(seats), seats
         elif seatType == "family":
             if currentSeat:
                 # check if there is any better seat
-                # TODO draw ticket
-                pass
+                seats = []
+                for i in range(-1, -self.availableSeatsNum - 1):
+                    pt, seats = self.familyTicketSelection(seats, i, size)
+                    if pt is not None:
+                        return pt, seats
+                if not seats:
+                    return self.noBetterSeat(), currentSeat
             # else assign a new seat
             else:
                 # add how many groups are in the flight
                 self.numGroups += 1
                 # subtract the amount of seats available
                 self.availableSeats -= size
-                # TODO draw ticket
+                seats = []
+                for i in range(-1, -self.availableSeatsNum - 1):
+                    pt, seats = self.familyTicketSelection(seats, i, size)
+                    if pt is not None:
+                        self.customerSatisfactionIndex.append(15)
+                        return pt, seats
+                # if the function hasn't returned yet, there are not seats in the style wanted
+                # assign random seats from the back
+                for i in range(size):
+                    seats.append(self.availableSeats[-1])
+                    self.availableSeats.pop(-1)
+                self.customerSatisfactionIndex.append(-10)
