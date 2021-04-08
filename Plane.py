@@ -22,6 +22,10 @@ class Plane:
         self.noBetterSeatText = Text(Point(500, 100), "No Better Seat Available")
         # a = left window, b = left middle, c = left aisle, d = right aisle, e = right middle, f = right window
         self.column = ["a", "b", "c", "d", "e", "f"]
+        self.layout = []
+        for i in range(6):
+            self.layout.append(Rectangle(Point(350 + 50 * i, 250), Point(400 + 50 * i, 300)))
+            self.layout.append(Text(Point(375 + 50 * i, 275), f"{self.column[i]}"))
 
     def flightFull(self) -> Point:
         # display flight is full and wait
@@ -38,7 +42,10 @@ class Plane:
         return pt
 
     def createTicket(self, seats:list) -> Point:
+
         tickets = []
+        for i in range(len(self.layout)):
+            self.layout[i].draw(self.win)
         for i in range(len(seats)):
             # find the row and column of the seat
             row = seats[i] // 6 + 1
@@ -46,9 +53,14 @@ class Plane:
             # create the ticket
             tickets.append(Text(Point(500, 100 + (i * 20)), f"Seat number {seats[i] + 1}. Row {row}, seat {self.column[column]}."))
             tickets[i].draw(self.win)
+        drawn = Text(Point(500, 230), "Row layout:")
+        drawn.draw(self.win)
         pt = self.win.getMouse()
+        for i in range(len(self.layout)):
+            self.layout[i].undraw()
         for i in range(len(tickets)):
             tickets[i].undraw()
+        drawn.undraw()
         return pt
 
     def touristTicketSelection(self, seats: list,  i: int) -> (Point, list):
