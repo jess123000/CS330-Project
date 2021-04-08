@@ -25,7 +25,7 @@ class CustomerView:
         self.touristText = Text(Point(500, 225), "Tourist")
         self.familyButton = Rectangle(Point(650, 200), Point(750, 250))
         self.familyText = Text(Point(700, 225), "Family")
-        self.familyViewText = Text(Point(500, 20), "Family View")
+        self.familyViewText = Text(Point(500, 20), "How many children do you have?")
         self.oneButton = Rectangle(Point(250, 200), Point(350, 250))
         self.oneText = Text(Point(300, 225), "One")
         self.twoButton = Rectangle(Point(450, 200), Point(550, 250))
@@ -200,6 +200,10 @@ class CustomerView:
             # if redo button was selected redo the type of seat selection
             elif (250 < pt.x < 350) and (390 < pt.y < 440):
                 self.selectSeat(seatType, currentSeat, size)
+                return
+            else:
+                # no button was clicked, wait again
+                pt = self.win.getMouse()
         return
 
     def selectSeat(self, seatType:str, currentSeat:list = None, size:int = None) -> None:

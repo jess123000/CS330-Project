@@ -15,7 +15,7 @@ class Plane:
         for i in range(120):
             self.availableSeats.append(i)
         self.availableSeatsNum = 120
-        self.customerSatisfactionIndex = [int]
+        self.customerSatisfactionIndex = []
         self.numGroups = 0
         self.win = win
         self.flightFullText = Text(Point(500, 100), "Flight full")
@@ -41,10 +41,10 @@ class Plane:
         tickets = []
         for i in range(len(seats)):
             # find the row and column of the seat
-            row = seats[i] // 20
+            row = seats[i] // 6 + 1
             column = seats[i] % 6
             # create the ticket
-            tickets.append(Text(Point(500, 100 + (i * 10)), f"Seat number {seats[i] + 1}. Row {row}, seat {self.column[column - 1]}."))
+            tickets.append(Text(Point(500, 100 + (i * 20)), f"Seat number {seats[i] + 1}. Row {row}, seat {self.column[column]}."))
             tickets[i].draw(self.win)
         pt = self.win.getMouse()
         for i in range(len(tickets)):
@@ -85,8 +85,7 @@ class Plane:
                 self.availableSeats.pop(i)
                 # generate the ticket
                 return self.createTicket(seats), seats
-        else:
-            return None, seats
+        return None, seats
 
     def familyTicketSelection(self, seats: list, i: int, size: int) -> (Point, list):
         if (self.availableSeats[i] + 1) % 6 == 3:
@@ -94,16 +93,22 @@ class Plane:
             seatsToCheck = [1, 6, 7, -1, 2, 5, 8]
             j = 0
             seats.append(self.availableSeats[i])
+            currentSeatNumber = self.availableSeats[i]
+            self.availableSeats.pop(i)
             while seatsGiven < size:
                 if j == 7:
+                    for k in range(len(seats)):
+                        self.availableSeats.append(seats[k])
+                    self.availableSeats.sort()
                     return None, []
-                if self.availableSeats[i] + seatsToCheck[j] in self.availableSeats:
+                if currentSeatNumber + seatsToCheck[j] in self.availableSeats:
                     seatsGiven += 1
-                    index = self.availableSeats.index(self.availableSeats[i] + 1)
+                    index = self.availableSeats.index(currentSeatNumber + seatsToCheck[j])
                     seats.append(self.availableSeats[index])
                     self.availableSeats.pop(index)
-                    j += 1
+                j += 1
             return self.createTicket(seats), seats
+        return None, []
 
     def assignSeat(self, seatType: str, currentSeat:list = None, size:int = None) -> (Point, list):
         if self.availableSeatsNum < size:
@@ -133,20 +138,18 @@ class Plane:
                 # take the seat out of available seats
                 self.availableSeats.pop(0)
                 # if the seat is in business class, satisfaction is 5
-                if seat < 12:
+                if seat[0] < 12:
                     self.customerSatisfactionIndex.append(5)
                 # else seat isn't business class, satisfaction is -5
                 else:
                     self.customerSatisfactionIndex.append(-5)
                 # generate the ticket
-                self.createTicket(seat)
-                pt = self.win.getMouse()
-                return pt, seat
+                return self.createTicket(seat), seat
         elif seatType == "tourist":
             if currentSeat:
                 # check if there is any better seat
                 seats = []
-                for i in range(-1, -self.availableSeatsNum - 1):
+                for i in range(-1, -self.availableSeatsNum - 1, -1):
                     pt, seats = self.touristTicketSelection(seats, i)
                     if pt is not None:
                         for j in range(len(currentSeat)):
@@ -160,9 +163,9 @@ class Plane:
                 # add how many groups are in the flight
                 self.numGroups += 1
                 # subtract the amount of seats available
-                self.availableSeats -= size
+                self.availableSeatsNum -= size
                 seats = []
-                for i in range(-1, -self.availableSeatsNum - 1):
+                for i in range(-1, -self.availableSeatsNum - 1, -1):
                     pt, seats = self.touristTicketSelection(seats, i)
                     if pt is not None:
                         self.customerSatisfactionIndex.append(15)
@@ -183,9 +186,12 @@ class Plane:
             if currentSeat:
                 # check if there is any better seat
                 seats = []
-                for i in range(-1, -self.availableSeatsNum - 1):
+                for i in range(-1, -self.availableSeatsNum - 1, -1):
                     pt, seats = self.familyTicketSelection(seats, i, size)
                     if pt is not None:
+                        for j in range(len(currentSeat)):
+                            self.availableSeats.append(currentSeat[j])
+                        self.availableSeats.sort()
                         return pt, seats
                 if not seats:
                     return self.noBetterSeat(), currentSeat
@@ -194,9 +200,9 @@ class Plane:
                 # add how many groups are in the flight
                 self.numGroups += 1
                 # subtract the amount of seats available
-                self.availableSeats -= size
+                self.availableSeatsNum -= size
                 seats = []
-                for i in range(-1, -self.availableSeatsNum - 1):
+                for i in range(-1, -self.availableSeatsNum - 1, -1):
                     pt, seats = self.familyTicketSelection(seats, i, size)
                     if pt is not None:
                         self.customerSatisfactionIndex.append(15)
@@ -207,3 +213,4 @@ class Plane:
                     seats.append(self.availableSeats[-1])
                     self.availableSeats.pop(-1)
                 self.customerSatisfactionIndex.append(-10)
+                return self.createTicket(seats), seats

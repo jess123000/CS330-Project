@@ -57,11 +57,13 @@ class ManagerView:
         else:
             tenRandom = random.choices(self.plane.customerSatisfactionIndex, k=10)
             index = 0
-            for i in range(len(tenRandom)):
-                index += self.plane.customerSatisfactionIndex[i]
+            for i in tenRandom:
+                index += i
             index /= 10
             drawn = Text(Point(500, 100), f"Customer Satisfaction Index: {index}")
         flightSize = Text(Point(500, 120), f"Number of groups: {self.plane.numGroups}")
+        drawn.draw(self.win)
+        flightSize.draw(self.win)
         # wait for button to be pressed and undraw
         pt = self.win.getMouse()
         flightSize.undraw()
