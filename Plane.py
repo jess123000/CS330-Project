@@ -53,14 +53,17 @@ class Plane:
             # create the ticket
             tickets.append(Text(Point(500, 100 + (i * 20)), f"Seat number {seats[i] + 1}. Row {row}, seat {self.column[column]}."))
             tickets[i].draw(self.win)
-        drawn = Text(Point(500, 230), "Row layout:")
-        drawn.draw(self.win)
+        drawn1 = Text(Point(500, 230), "Front of plane")
+        drawn2 = Text(Point(500, 320), "Back of plane")
+        drawn1.draw(self.win)
+        drawn2.draw(self.win)
         pt = self.win.getMouse()
         for i in range(len(self.layout)):
             self.layout[i].undraw()
         for i in range(len(tickets)):
             tickets[i].undraw()
-        drawn.undraw()
+        drawn1.undraw()
+        drawn2.undraw()
         return pt
 
     def touristTicketSelection(self, seats: list,  i: int) -> (Point, list):
