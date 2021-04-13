@@ -7,7 +7,6 @@
 # --------------------------------------------------
 
 import sys
-from graphics import *
 from Plane import *
 import random
 
@@ -16,41 +15,41 @@ class ManagerView:
 
     def __init__(self, win: GraphWin, plane: Plane):
         # create all the buttons and text
-        self.quitButton = Rectangle(Point(450, 500), Point(550, 550))
-        self.quitText = Text(Point(500, 525), "Quit")
-        self.logOffButton = Rectangle(Point(350, 390), Point(450, 440))
-        self.logOffText = Text(Point(400, 415), "Log Off")
-        self.redoButton = Rectangle(Point(550, 390), Point(650, 440))
-        self.redoText = Text(Point(600, 415), "Redo")
-        self.managerViewText = Text(Point(500, 20), "Manager View")
+        self.__quitButton = Rectangle(Point(450, 500), Point(550, 550))
+        self.__quitText = Text(Point(500, 525), "Quit")
+        self.__logOffButton = Rectangle(Point(350, 390), Point(450, 440))
+        self.__logOffText = Text(Point(400, 415), "Log Off")
+        self.__redoButton = Rectangle(Point(550, 390), Point(650, 440))
+        self.__redoText = Text(Point(600, 415), "Redo")
+        self.__managerViewText = Text(Point(500, 20), "Manager View")
         self.win = win
         self.plane = plane
 
     def drawManagerView(self) -> None:
         # draw all buttons and text
-        self.quitButton.draw(self.win)
-        self.quitText.draw(self.win)
-        self.logOffButton.draw(self.win)
-        self.logOffText.draw(self.win)
-        self.redoButton.draw(self.win)
-        self.redoText.draw(self.win)
-        self.managerViewText.draw(self.win)
-        self.calculateSatisfactionIndex()
+        self.__quitButton.draw(self.win)
+        self.__quitText.draw(self.win)
+        self.__logOffButton.draw(self.win)
+        self.__logOffText.draw(self.win)
+        self.__redoButton.draw(self.win)
+        self.__redoText.draw(self.win)
+        self.__managerViewText.draw(self.win)
+        self.__calculateSatisfactionIndex()
         return
 
 
     def undrawManagerView(self) -> None:
         # undraw all buttons and text
-        self.quitButton.undraw()
-        self.quitText.undraw()
-        self.logOffButton.undraw()
-        self.logOffText.undraw()
-        self.redoButton.undraw()
-        self.redoText.undraw()
-        self.managerViewText.undraw()
+        self.__quitButton.undraw()
+        self.__quitText.undraw()
+        self.__logOffButton.undraw()
+        self.__logOffText.undraw()
+        self.__redoButton.undraw()
+        self.__redoText.undraw()
+        self.__managerViewText.undraw()
         return
 
-    def calculateSatisfactionIndex(self) -> None:
+    def __calculateSatisfactionIndex(self) -> None:
         # calculate satisfaction index here
         if self.plane.numGroups < 10:
             drawn = Text(Point(500, 100), "Not enough groups for satisfaction results")
@@ -84,7 +83,7 @@ class ManagerView:
                  return
             # if redo button was clicked
             elif (550 < pt.x < 650) and (390 < pt.y < 440):
-                self.calculateSatisfactionIndex()
+                self.__calculateSatisfactionIndex()
                 return
             else:
                 # no button was clicked, wait again

@@ -7,62 +7,61 @@
 # --------------------------------------------------
 
 import sys
-from graphics import *
 from Plane import *
 
 class CustomerView:
 
     def __init__(self, win: GraphWin, plane: Plane):
         # create all the buttons and text
-        self.quitButton = Rectangle(Point(450, 500), Point(550, 550))
-        self.quitText = Text(Point(500, 525), "Quit")
-        self.logOffButton = Rectangle(Point(450, 390), Point(550, 440))
-        self.logOffText = Text(Point(500, 415), "Log Off")
-        self.customerViewText = Text(Point(500, 20), "Customer View")
-        self.businessButton = Rectangle(Point(250, 200), Point(350, 250))
-        self.businessText = Text(Point(300, 225), "Business")
-        self.touristButton = Rectangle(Point(450, 200), Point(550, 250))
-        self.touristText = Text(Point(500, 225), "Tourist")
-        self.familyButton = Rectangle(Point(650, 200), Point(750, 250))
-        self.familyText = Text(Point(700, 225), "Family")
-        self.familyViewText = Text(Point(500, 20), "How many children do you have?")
-        self.oneButton = Rectangle(Point(250, 200), Point(350, 250))
-        self.oneText = Text(Point(300, 225), "One")
-        self.twoButton = Rectangle(Point(450, 200), Point(550, 250))
-        self.twoText = Text(Point(500, 225), "Two")
-        self.threeButton = Rectangle(Point(650, 200), Point(750, 250))
-        self.threeText = Text(Point(700, 225), "Three")
-        self.redoButton = Rectangle(Point(250, 390), Point(350, 440))
-        self.redoText = Text(Point(300, 415), "Redo")
+        self.__quitButton = Rectangle(Point(450, 500), Point(550, 550))
+        self.__quitText = Text(Point(500, 525), "Quit")
+        self.__logOffButton = Rectangle(Point(450, 390), Point(550, 440))
+        self.__logOffText = Text(Point(500, 415), "Log Off")
+        self.__customerViewText = Text(Point(500, 20), "Customer View")
+        self.__businessButton = Rectangle(Point(250, 200), Point(350, 250))
+        self.__businessText = Text(Point(300, 225), "Business")
+        self.__touristButton = Rectangle(Point(450, 200), Point(550, 250))
+        self.__touristText = Text(Point(500, 225), "Tourist")
+        self.__familyButton = Rectangle(Point(650, 200), Point(750, 250))
+        self.__familyText = Text(Point(700, 225), "Family")
+        self.__familyViewText = Text(Point(500, 20), "How many children do you have?")
+        self.__oneButton = Rectangle(Point(250, 200), Point(350, 250))
+        self.__oneText = Text(Point(300, 225), "One")
+        self.__twoButton = Rectangle(Point(450, 200), Point(550, 250))
+        self.__twoText = Text(Point(500, 225), "Two")
+        self.__threeButton = Rectangle(Point(650, 200), Point(750, 250))
+        self.__threeText = Text(Point(700, 225), "Three")
+        self.__redoButton = Rectangle(Point(250, 390), Point(350, 440))
+        self.__redoText = Text(Point(300, 415), "Redo")
         self.win = win
         self.plane = plane
 
     def drawAllNeed(self) -> None:
         # draw things all views need
-        self.quitButton.draw(self.win)
-        self.quitText.draw(self.win)
-        self.logOffButton.draw(self.win)
-        self.logOffText.draw(self.win)
+        self.__quitButton.draw(self.win)
+        self.__quitText.draw(self.win)
+        self.__logOffButton.draw(self.win)
+        self.__logOffText.draw(self.win)
         return
 
     def undrawAllNeed(self) -> None:
         # undraw things all view need
-        self.quitButton.undraw()
-        self.quitText.undraw()
-        self.logOffButton.undraw()
-        self.logOffText.undraw()
+        self.__quitButton.undraw()
+        self.__quitText.undraw()
+        self.__logOffButton.undraw()
+        self.__logOffText.undraw()
         return
 
     def drawStartCustomerView(self) -> None:
         # draw all the buttons and  text
         self.drawAllNeed()
-        self.customerViewText.draw(self.win)
-        self.businessButton.draw(self.win)
-        self.businessText.draw(self.win)
-        self.touristButton.draw(self.win)
-        self.touristText.draw(self.win)
-        self.familyButton.draw(self.win)
-        self.familyText.draw(self.win)
+        self.__customerViewText.draw(self.win)
+        self.__businessButton.draw(self.win)
+        self.__businessText.draw(self.win)
+        self.__touristButton.draw(self.win)
+        self.__touristText.draw(self.win)
+        self.__familyButton.draw(self.win)
+        self.__familyText.draw(self.win)
 
         # wait for click and see what was clicked
         self.clickedStart(self.win.getMouse())
@@ -70,13 +69,13 @@ class CustomerView:
 
     def undrawStartCustomerView(self) -> None:
         # undraw all the buttons and text
-        self.customerViewText.undraw()
-        self.businessButton.undraw()
-        self.businessText.undraw()
-        self.touristButton.undraw()
-        self.touristText.undraw()
-        self.familyButton.undraw()
-        self.familyText.undraw()
+        self.__customerViewText.undraw()
+        self.__businessButton.undraw()
+        self.__businessText.undraw()
+        self.__touristButton.undraw()
+        self.__touristText.undraw()
+        self.__familyButton.undraw()
+        self.__familyText.undraw()
         return
 
     def clickedStart(self, pt: Point) -> None:
@@ -115,26 +114,26 @@ class CustomerView:
 
     def drawFamilyView(self) -> None:
         # draw the family selection choices
-        self.familyViewText.draw(self.win)
-        self.oneButton.draw(self.win)
-        self.oneText.draw(self.win)
-        self.twoButton.draw(self.win)
-        self.twoText.draw(self.win)
-        self.threeButton.draw(self.win)
-        self.threeText.draw(self.win)
+        self.__familyViewText.draw(self.win)
+        self.__oneButton.draw(self.win)
+        self.__oneText.draw(self.win)
+        self.__twoButton.draw(self.win)
+        self.__twoText.draw(self.win)
+        self.__threeButton.draw(self.win)
+        self.__threeText.draw(self.win)
 
         # wait for click and see what was clicked
         return self.clickedFamily(self.win.getMouse())
 
     def undrawFamilyView(self) -> None:
         # undraw family view
-        self.familyViewText.undraw()
-        self.oneButton.undraw()
-        self.oneText.undraw()
-        self.twoButton.undraw()
-        self.twoText.undraw()
-        self.threeButton.undraw()
-        self.threeText.undraw()
+        self.__familyViewText.undraw()
+        self.__oneButton.undraw()
+        self.__oneText.undraw()
+        self.__twoButton.undraw()
+        self.__twoText.undraw()
+        self.__threeButton.undraw()
+        self.__threeText.undraw()
         return
 
     def clickedFamily(self, pt: Point) -> None:
@@ -176,13 +175,13 @@ class CustomerView:
         return
 
     def drawSeatSelection(self) -> None:
-        self.redoButton.draw(self.win)
-        self.redoText.draw(self.win)
+        self.__redoButton.draw(self.win)
+        self.__redoText.draw(self.win)
         return
 
     def undrawSeatSelection(self) -> None:
-        self.redoButton.undraw()
-        self.redoText.undraw()
+        self.__redoButton.undraw()
+        self.__redoText.undraw()
         return
 
     def clickedSeatSelection(self, pt: Point, seatType: str, currentSeat:list = None, size:int = None) -> None:
