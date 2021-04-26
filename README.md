@@ -1,5 +1,7 @@
 #CS330 SP21 Project
 
+##To run start this program, run the FlightsGUI.py file
+
 This is a software system to make seat
 arrangement for a small airline which operates between two cities: X and Y. 
 The flight has 20 rows of six seats, arranged 3-3. The first 2 rows are business select.
